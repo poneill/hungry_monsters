@@ -1,68 +1,193 @@
+def write_reaction(self,label,reactants,products,rate):
+        #TODO: currently does not handle stoichiometry of reactions
+        #such as A + A -> B
+        reaction_label = self.name + "_" + label + ":"
+        reactant_string = " + ".join(map(str,reactants)) if reactants else "$pool"
+        product_string = " + ".join(map(str,products)) if products else "$pool"
+        reaction_eq = "\t" + reactant_string + " > " + product_string
+        reaction_rate_string = "\t" + str(rate) + \
+            ((" * " + " * ".join(map(str,reactants))) if reactants else "")
+        return "\n".join([reaction_label,
+                          reaction_eq,
+                          reaction_rate_string]) + "\n"
+
+
+class Network(object):
+    def __init__(self,interactions):
+        gene_names = set(sum([(regulator,regulated)
+                          for (regulator,regulated,_,_)
+                              in interactions],()))
+        def relevant_interactions(reg):
+            return [(regulator,regulated,rate,mode)
+                    for (regulator,regulated,rate,mode) in interactions
+                    if regulator == reg]
+        self.genes = [Gene(name, interactions=interactions)
+                      for name in gene_names]
+        self.sugar = Sugar(genes[0],genes[-1])
+    def write(self):
+        return "\n".join([g.write() for g in self.genes]) + self.sugar.write()
+
+    def write_to_file(self,filename):
+        with open(filename,'w') as f:
+            f.write(self.write())
+
+class Sugar(object):
+    def __init__(self,sensor,catalyst):
+        self.sensor = sensor.name
+        self.catalyst = catalyst.name
+        self.phosphorylation_rate = 100
+        self.catalysis_rate = 1
+        self.production_rate = 1
+        self.degradation_rate = 1
+    def write(self):
+        phosphorylation = write_reaction("phosphorylation",
+                                         ["s",self.sensor],
+                                         ["s",self.sensor + "star"],
+                                         self.phosphorylation_rate)
+        catalysis = write_reaction("catalyis",
+                                   ["sugar",self.catalyst],
+                                   [self.catalyst, "sugar_eaten"],
+                                   self.catalysis_rate)
+        production = write_reaction("production",
+                                   [],
+                                   ["sugar"],
+                                   self.production_rate)
+        degradation = write_reaction("degradation",
+                                   ["sugar"],
+                                   [],
+                                   self.degradation_rate)
+        return "\n".join([phosphorylation,catalysis,production,degradation])
+    
 class Gene(object):
     @staticmethod
     def equals(a,b):
         return "%s=%s\n" % (a,b)
 
-    def __init__(self,name,translation_rate,mRNA_degradation_rate,
-                 protein_degradation_rate,basal_transcription_rate,
-                 upstream_interactions):
+    def __init__(self,name,interactions,translation_rate=1,
+                 mRNA_degradation_rate=1, protein_degradation_rate=0.1,
+                 basal_transcription_rate=1,active_transcription_rate=10):
         self.name = name
         self.translation_rate = translation_rate
         self.mRNA_degradation_rate = mRNA_degradation_rate
         self.protein_degradation_rate = protein_degradation_rate
         self.basal_transcription_rate = basal_transcription_rate
-        self.upstream_interactions = upstream_interactions
+        self.active_transcription_rate = active_transcription_rate
+        self.unbinding_rate = 1
+        self.interactions = filter(lambda (reg,x,y,z):reg == name,interactions)
         self.promoter = self.name + "_promoter"
-        self.bound_promoter = self.name + "_bound_promoter"
+        self.activated_promoter = self.name + "_activated_promoter"
+        self.repressed_promoter = self.name + "_repressed_promoter"
         self.mRNA = self.name + "_mRNA"
         self.protein = self.name + "_protein"
         self.init_promoter = 1
-        self.init_bound_promoter = 0
+        self.init_activated_promoter = 0
+        self.init_repressed_promoter = 0
         self.init_mRNA = 0
         self.init_protein = 0
-
         
-    def write_reaction(self,label,reactants,products,rate_factors):
-        #TODO: infer reaction rate from reactants
-        reaction_label = self.name + "_" + label + ":"
-        reactant_string = "+".join(map(str,reactants)) if reactants else "$pool"
-        product_string = "+".join(map(str,products)) if products else "$pool"
-        reaction_eq = "\t" + reactant_string + " > " + product_string
-        reaction_rate = "\t" + "*".join(map(str,rate_factors))
-        return "\n".join([reaction_label,
-                         reaction_eq,
-                         reaction_rate])    
-
     def init_params(self):
         return "\n".join([Gene.equals(self.promoter,self.init_promoter),
-                          Gene.equals(self.bound_promoter,self.init_bound_promoter),
+                          Gene.equals(self.activated_promoter,
+                                      self.init_activated_promoter),
+                          Gene.equals(self.repressed_promoter,
+                                      self.init_repressed_promoter),
                           Gene.equals(self.mRNA,self.init_mRNA),
                           Gene.equals(self.protein,self.init_protein)])
-        
-    def write(self):
-        """return a string describing all of gene's interactions'"""
-        param_string = self.init_params()
-        translation_string = self.write_reaction("translation",
+
+    def translation_string(self):
+        return write_reaction(self.name + "_translation",
                                                  [self.mRNA],
                                                  [self.mRNA,self.protein],
-                                                 [self.translation_rate,self.mRNA])
-        mRNA_deg_string = self.write_reaction("mRNA_degradation",
+                                                 self.translation_rate)
+    
+    def mRNA_deg_string(self):
+        return write_reaction(self.name + "_mRNA_degradation",
+                              [self.mRNA],
+                              [],
+                              self.mRNA_degradation_rate)
+    
+    def translation_string(self):
+        return write_reaction(self.name + "_translation",
+                                                 [self.mRNA],
+                                                 [self.mRNA,self.protein],
+                                                 self.translation_rate)
+
+    def mRNA_deg_string(self):
+        return write_reaction(self.name + "_mRNA_degradation",
                                               [self.mRNA],
                                               [],
-                                              [self.mRNA_degradation_rate,self.mRNA])
-        protein_deg_string = self.write_reaction("protein_degradation",
+                                              self.mRNA_degradation_rate)
+    
+    def protein_deg_string(self):
+        return write_reaction(self.name + "_protein_degradation",
                                               [self.protein],
                                               [],
-                                              [self.protein_degradation_rate,
-                                               self.protein])
-        basal_transcription_string = self.write_reaction("basal_transcription",
+                                              self.protein_degradation_rate)
+    
+    def basal_transcription_string(self):
+        return write_reaction(self.name + "_basal_transcription",
                                               [self.promoter],
                                               [self.promoter,self.mRNA],
-                                              [self.basal_transcription_rate,
-                                               self.promoter])
-        return "\n".join([param_string,translation_string,mRNA_deg_string,
-                         protein_deg_string, basal_transcription_string])
-        
+                                              self.basal_transcription_rate)
+    
+    def active_transcription_string(self):
+        return write_reaction(self.name + "_active_transcription",
+                              [self.activated_promoter],
+                              [self.activated_promoter,self.mRNA],
+                              self.active_transcription_rate)
+    def write(self):
+        """return a string describing all of gene's interactions'"""
+        regulations = "\n".join(map(self.write_reaction_from_interaction,
+                                    self.interactions))
+        return "\n".join([self.init_params(),self.translation_string(),
+                          self.mRNA_deg_string(),self. protein_deg_string(),
+                          self. basal_transcription_string(),
+                          self. active_transcription_string(),self. regulations])
+
+    def write_reaction_from_interaction(self,interaction):
+        regulator, regulated,rate,mode = interaction
+        if regulator == self.name:
+            def describe(mode):
+                return "_activates_" if mode == 1 else "represses_"
+            def product(mode):
+                return (regulated + "_activated_promoter" if mode == 1
+                        else regulated + "_repressed_promoter")
+            return (write_reaction(self.name + describe(mode) + regulated,
+                                       [self.protein,regulated + "_promoter"],
+                                       [product(mode)],
+                                       rate) +
+                    self.write_reaction(self.name + "_un" + describe(mode) + regulated,
+                                       [product(mode)],
+                                       [self.protein,regulated + "_promoter"],
+                                       self.unbinding_rate))
+        else:
+            return ""
+
+class PhosphorylatingGene(Gene):
+    def __init__(self,args):
+        Gene.__init__(self,args)
+        self.protein_star = self.protein + "star"
+        self.init_protein_star = 0
+        self.protein_star_degradation_rate = self.protein_degradation_rate
+
+    def init_params(self):
+        return (super.init_params() +
+                "\n" +
+                Gene.equals(self.protein_star, self.init_protein_star))
+    
+    def protein_deg_string(self):
+        return (super.protein_deg_string(self) +
+                "\n" +
+                write_reaction(self.protein_star + "_degradation",
+                               [self.protein_star],
+                               [],
+                               self.protein_star_degradation_rate))
+
+    def write_reaction_from_interaction(self,interaction):
+        regulator, regulated,rate,mode = interaction
+        return super.write_reaction_from_interaction([s])
+
+               
 class Model(object):
     def __init__(self,genes,interactions):
         self.genes = genes
@@ -77,15 +202,15 @@ class Model(object):
                 protein_degradation_rate = 0.1
                 basal_transcription_rate = 0.1
                 init_promoter = 1
-                init_bound_promoter = 0
+                init_activated_promoter = 0
                 init_mRNA = 0
                 init_protein = 1
                 promoter = gene + "_promoter"
-                bound_promoter = gene + "_bound_promoter"
+                activated_promoter = gene + "_activated_promoter"
                 mRNA = gene + "_mRNA"
                 protein = gene + "_protein"
                 f.write("%s = %s\n" % (promoter,init_promoter))
-                f.write("%s = %s\n" % (bound_promoter,init_bound_promoter))
+                f.write("%s = %s\n" % (activated_promoter,init_activated_promoter))
                 f.write("%s = %s\n" % (mRNA,init_mRNA))
                 f.write("%s = %s\n" % (protein,init_protein))
                 f.write(gene + "_translation:\n")
@@ -109,21 +234,21 @@ class Model(object):
                 regulated_mRNA = regulated + "_mRNA"
                 unbinding_rate = 1
                 transcription_rate = 100
-                bound_complex =  regulated + "_bound_promoter"
+                activated_complex =  regulated + "_activated_promoter"
                 f.write(reaction_name + "_complex_formation:\n")
                 f.write("\t%s + %s > %s\n" % (regulator_protein, regulated_promoter,
-                                              bound_complex))
+                                              activated_complex))
                 f.write("\t%s*%s*%s\n" % (binding_rate,regulator_protein,
                                           regulated_promoter))
                 f.write(reaction_name + "_complex_dissociation:\n")
-                f.write("\t%s > %s + %s\n" % (bound_complex,regulator_protein,
+                f.write("\t%s > %s + %s\n" % (activated_complex,regulator_protein,
                                               regulated_promoter))
-                f.write("\t%s*%s\n" % (unbinding_rate,bound_complex))
+                f.write("\t%s*%s\n" % (unbinding_rate,activated_complex))
                 if mode == activation:
                     f.write(reaction_name + "_transcription:\n")
-                    f.write("\t%s > %s + %s\n" % (bound_complex,bound_complex,
+                    f.write("\t%s > %s + %s\n" % (activated_complex,activated_complex,
                                                   regulated_mRNA))
-                    f.write("\t%s*%s\n" % (transcription_rate,bound_complex))
+                    f.write("\t%s*%s\n" % (transcription_rate,activated_complex))
                         
 def main():
     m = Model(["X","Y","Z"],[["X","Y",100,-1],["Y","Z",100,-1],["Z","X",100,-1]])
@@ -131,5 +256,18 @@ def main():
     mod = stochpy.SSA(File="foo.psc",dir='.')
     mod.DoStochSim(end=100000)
     mod.PlotTimeSim(species2plot=['X_protein','Y_protein','Z_protein'])
+
+def main2():
+    trans_interactions = [
+        ["x","y",10,1],
+        ["y","z",20,-1],
+        ["x","z",10,1]
+        ]
+    n = Network(trans_interactions)
+    n.write_to_file("bar.psc")
+    mod = stochpy.SSA(File="bar.psc",dir='.')
+    mod.DoStochSim(end=10000,trajectories=1)
+    #mod.PlotInterpolatedData()
+    mod.PlotTimeSim(species2plot=['x_protein','y_protein','z_protein'])
 
 print "loaded"
