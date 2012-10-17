@@ -112,10 +112,173 @@ Y_represses_Z:
 	%s * Y_protein * Z_basal_promoter
 # end interactions with other genes
 
-#
-# 3 more sets of reactions of U,V,Z
-#
+# basic gene parameters for U
+# transcription rates
+U_activated_transcription:
+	U_activated_promoter + alpha * ATP > U_activated_promoter + U_mrna
+	%s * U_activated_p
+U_basal_transcription:
+	U_basal_promoter + alpha * ATP > U_activated_promoter + U_mrna
+	%s * U_basal_p
+U_repressed_transcription:
+	U_repressed_promoter + alpha * ATP > U_repressed_promoter + U_mrna
+	%s * U_repressed_p
+#translation rates
+U_translation:
+	U_mrna + beta * ATP > U_mrna + U_protein
+	%s * U_mrna
+#degredation rates
+U_mrna_deg:
+	U_mrna > $pool
+	%s * U_protein
+#end basic gene parameters
 
+#interactions with other genes:
+U_activates_U:
+	U_protein + U_basal_promoter = U_activated_promoter
+	%s * U_protein * U_basal_promoter
+U_represses_U:
+	U_protein + U_basal_promoter = U_repressed_promoter
+	%s * U_protein * U_basal_promoter
+U_activates_V:
+	U_protein + V_basal_promoter = V_activated_promoter
+	%s * U_protein * V_basal_promoter
+U_represses_V:
+	U_protein + V_basal_promoter = V_repressed_promoter
+	%s * U_protein * V_basal_promoter
+U_activates_X:
+	U_protein + X_basal_promoter = X_activated_promoter
+	%s * U_protein * X_basal_promoter
+U_represses_X:
+	U_protein + X_basal_promoter = X_repressed_promoter
+	%s * U_protein * X_basal_promoter
+U_activates_Y:
+	U_protein + Y_basal_promoter = Y_activated_promoter
+	%s * U_protein * Y_basal_promoter
+U_represses_Y:
+	U_protein + Y_basal_promoter = Y_repressed_promoter
+	%s * U_protein * Y_basal_promoter
+U_activates_Z:
+	U_protein + Z_basal_promoter = Z_activated_promoter
+	%s * U_protein * Z_basal_promoter
+U_represses_Z:
+	U_protein + Z_basal_promoter = Z_repressed_promoter
+	%s * U_protein * Z_basal_promoter
+#end interactions with other genes
+
+# basic gene parameters for V
+# transcription rates
+V_activated_transcription:
+	V_activated_promoter + alpha * ATP > V_activated_promoter + V_mrna
+	%s * V_activated_p
+V_basal_transcription:
+	V_basal_promoter + alpha * ATP > V_basal_promoter + V_mrna
+	%s * V_basal_p
+V_repressed_transcription:
+	V_repressed_promoter + alpha * ATP > V_repressed_promoter + V_mrna
+	%s * V_repressed_p
+# translation rates
+V_translation:
+	V_mrna + beta * ATP > V_mrna + V_protein
+	%s * V_mrna
+# degredation rates
+V_mrna_deg:
+	V_mrna > $pool
+	%s * V_mrna
+V_protein_deg:
+	V_protein > $pool
+	%s * V_protein
+# end basic gene parameters
+
+# interactions with other genes:
+V_activates_U:
+	V_protein + U_basal_promoter = U_activated_promoter
+	%s * V_protein * U_basal_promoter
+V_represses_U:
+	V_protein + U_basal_promoter = U_repressed_promoter
+	%s * V_protein * U_basal_promoter
+V_activates_V:
+	V_protein + V_basal_promoter = V_activated_promoter
+	%s * V_protein * V_basal_promoter
+V_represses_V:
+	V_protein + V_basal_promoter = V_repressed_promoter
+	%s * V_protein * V_basal_promoter
+V_activates_X:
+	V_protein + X_basal_promoter = X_activated_promoter
+	%s * V_protein * X_basal_promoter
+V_represses_X:
+	V_protein + X_basal_promoter = X_repressed_promoter
+	%s * V_protein * X_basal_promoter
+V_activates_Y:
+	V_protein + Y_basal_promoter = Y_activated_promoter
+	%s * V_protein * Y_basal_promoter
+V_represses_Y:
+	V_protein + Y_basal_promoter = Y_repressed_promoter
+	%s * V_protein * Y_basal_promoter
+V_activates_Z:
+	V_protein + Z_basal_promoter = Z_activated_promoter
+	%s * X_protein * Z_basal_promoter
+V_represses_Z:
+	V_protein + Z_basal_promoter = Z_repressed_promoter
+	%s * V_protein * Z_basal_promoter
+# end interactions with other genes
+
+# basic gene parameters for Z
+# transcription rates
+Z_activated_transcription:
+	Z_activated_promoter + alpha * ATP > Z_activated_promoter + Z_mrna
+	%s * Z_activated_p
+Z_basal_transcription:
+	Z_basal_promoter + alpha * ATP > Z_basal_promoter + Z_mrna
+	%s * Z_basal_p
+Z_repressed_transcription:
+	Z_repressed_promoter + alpha * ATP > Z_repressed_promoter + Z_mrna
+	%s * Z_repressed_p
+# translation rates
+Z_translation:
+	Z_mrna + beta * ATP > Z_mrna + Z_protein
+	%s * V_mrna
+# degredation rates
+Z_mrna_deg:
+	Z_mrna > $pool
+	%s * Z_mrna
+Z_protein_deg:
+	Z_protein > $pool
+	%s * Z_protein
+# end basic gene parameters
+
+# interactions with other genes:
+Z_activates_U:
+	Z_protein + U_basal_promoter = U_activated_promoter
+	%s * Z_protein * U_basal_promoter
+Z_represses_U:
+	Z_protein + U_basal_promoter = U_repressed_promoter
+	%s * Z_protein * U_basal_promoter
+Z_activates_V:
+	Z_protein + V_basal_promoter = V_activated_promoter
+	%s * Z_protein * V_basal_promoter
+Z_represses_V:
+	Z_protein + V_basal_promoter = V_repressed_promoter
+	%s * Z_protein * V_basal_promoter
+Z_activates_X:
+	Z_protein + X_basal_promoter = X_activated_promoter
+	%s * Z_protein * X_basal_promoter
+Z_represses_X:
+	Z_protein + X_basal_promoter = X_repressed_promoter
+	%s * Z_protein * X_basal_promoter
+Z_activates_Y:
+	Z_protein + Y_basal_promoter = Y_activated_promoter
+	%s * Z_protein * Y_basal_promoter
+Z_represses_Y:
+	Z_protein + Y_basal_promoter = Y_repressed_promoter
+	%s * Z_protein * Y_basal_promoter
+Z_activates_Z:
+	Z_protein + Z_basal_promoter = Z_activated_promoter
+	%s * X_protein * Z_basal_promoter
+Z_represses_Z:
+	Z_protein + Z_basal_promoter = Z_repressed_promoter
+	%s * Z_protein * Z_basal_promoter
+# end interactions with other genes
 
 # reactions for sensor gene T
 # basic gene parameters for T
