@@ -1,3 +1,15 @@
+# Global parameters
+translation_rate = 1
+protein_degradation_rate = 1
+mRNA_degradation_rate = 1
+sugar_entering_rate = 10
+sugar_leaving_rate = 1
+alpha = 1
+beta = 2
+gamma = 10
+
+# total variable params (%s): 94
+
 # basic gene parameters for X
 # transcription rates
 X_activated_transcription:
@@ -12,14 +24,14 @@ X_repressed_transcription:
 # translation rates
 X_translation:
 	X_mrna + beta * ATP > X_mrna + X_protein
-	%s * X_mrna
+	translation_rate * X_mrna
 # degredation rates
 X_mrna_deg:
 	X_mrna > $pool
-	%s * X_mrna
+	mRNA_degradation_rate * X_mrna
 X_protein_deg:
 	X_protein > $pool
-	%s * X_protein
+	protein_degradation_rate * X_protein
 # end basic gene parameters
 
 # interactions with other genes:
@@ -69,14 +81,14 @@ Y_repressed_transcription:
 # translation rates
 Y_translation:
 	Y_mrna + beta * ATP > Y_mrna + Y_protein
-	%s * Y_mrna
+	translation_rate * Y_mrna
 # degredation rates
 Y_mrna_deg:
 	Y_mrna > $pool
-	%s * Y_mrna
+	mRNA_degradation_rate * Y_mrna
 Y_protein_deg:
 	Y_protein > $pool
-	%s * Y_protein
+	protein_degradation_rate * Y_protein
 # end basic gene parameters
 
 # interactions with other genes:
@@ -126,11 +138,11 @@ U_repressed_transcription:
 #translation rates
 U_translation:
 	U_mrna + beta * ATP > U_mrna + U_protein
-	%s * U_mrna
+	translation_rate * U_mrna
 #degredation rates
 U_mrna_deg:
 	U_mrna > $pool
-	%s * U_protein
+	mRNA_degradation_rate * U_mrna
 #end basic gene parameters
 
 #interactions with other genes:
@@ -180,14 +192,14 @@ V_repressed_transcription:
 # translation rates
 V_translation:
 	V_mrna + beta * ATP > V_mrna + V_protein
-	%s * V_mrna
+	translation_rate * V_mrna
 # degredation rates
 V_mrna_deg:
 	V_mrna > $pool
-	%s * V_mrna
+	mRNA_degradation_rate * V_mrna
 V_protein_deg:
 	V_protein > $pool
-	%s * V_protein
+	protein_degradation_rate * V_protein
 # end basic gene parameters
 
 # interactions with other genes:
@@ -237,14 +249,14 @@ Z_repressed_transcription:
 # translation rates
 Z_translation:
 	Z_mrna + beta * ATP > Z_mrna + Z_protein
-	%s * V_mrna
+	translation_rate * V_mrna
 # degredation rates
 Z_mrna_deg:
 	Z_mrna > $pool
-	%s * Z_mrna
+	mRNA_degradation_rate * Z_mrna
 Z_protein_deg:
 	Z_protein > $pool
-	%s * Z_protein
+	protein_degradation_rate * Z_protein
 # end basic gene parameters
 
 # interactions with other genes:
@@ -295,14 +307,14 @@ T_repressed_transcription:
 # translation rates
 T_translation:
 	T_mrna + beta * ATP > T_mrna + T_protein
-	%s * T_mrna
+	translation_rate * T_mrna
 # degredation rates
 T_mrna_deg:
 	T_mrna > $pool
-	%s * T_mrna
+	mRNA_degradation_rate * T_mrna
 T_protein_deg:
 	T_protein > $pool
-	%s * T_protein
+	protein_degradation_rate * T_protein
 Tstar_protein_deg:
 	Tstar_protein > $pool
 	%s * Tstar_protein
@@ -361,14 +373,14 @@ P_repressed_transcription:
 # translation rates
 P_translation:
 	P_mrna + beta * ATP > P_mrna + P_protein
-	%s * P_mrna
+	translation_rate * P_mrna
 # degredation rates
 P_mrna_deg:
 	P_mrna > $pool
-	%s * P_mrna
+	mRNA_degradation_rate * P_mrna
 P_protein_deg:
 	P_protein > $pool
-	%s * P_protein
+	protein_degradation_rate * P_protein
 # end basic gene parameters
 
 # interactions with other genes:
@@ -405,3 +417,13 @@ P_represses_Z:
 	P_protein + Z_basal_promoter = Z_repressed_promoter
 	%s * P_protein * Z_basal_promoter
 # end interactions with other genes
+
+# Sugar interactions
+
+Sugar_enters_system:
+	$pool > S
+	sugar_entering_rate
+
+Sugar_leaves_system:
+	S > $pool
+	sugar_leaving_rate
