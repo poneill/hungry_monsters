@@ -7,3 +7,6 @@ def variance(xs):
 
 def zipWith(f,xs,ys):
     return map(lambda(x,y):f(x,y),zip(xs,ys))
+
+def transpose(xxs):
+    return zip(*xxs)
