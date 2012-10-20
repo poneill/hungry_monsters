@@ -1,6 +1,7 @@
 import random
 from chromosome import Chromosome
 from utils import *
+from matplotlib import pyplot as plt
 
 class GA(object):
     def __init__(self,pop_size=100,k=2,init_pop = None):
