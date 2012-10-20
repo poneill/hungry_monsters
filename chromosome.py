@@ -48,28 +48,13 @@ class Chromosome(object):
         return Chromosome(genotype)
         
     def visualize(self):
-        g = nx.DiGraph()
+        g = nx.MultiDiGraph()
         nodes = ["U","V","X","Y","Z","T","P"]
-        node_label_templates = ["%s",
-                                 "%s_activated_transcription",
-                                 "%s_basal_transcription",
-                                 "%s_repressed_transcription"]
-        node_labels = [nlt % n for nlt in node_label_templates
-                       for n in nodes]
-        for node_label in node_labels:
-            if "transcription" in node_label:
-                rate = self.parse_model_file(node_label + ":")
-            else:
-                rate = 'blue'
-            g.add_node(node_label,color=rate)
         for node in nodes:
-            for node_label in node_labels:
-                if node in node_label and not node == node_label:
-                    g.add_edge(node,node_label)
+            g.add_node(node)
         pos = nx.spring_layout(g)
-        for i,(node_label,data) in enumerate(g.nodes(data=True)):
-            nx.draw_networkx_nodes(g,pos,nodelist = [node_label],
-                                   node_color=data['color'])
+        # draw base nodes
+        nx.draw_networkx_nodes(g,pos,nodelist = nodes)
         for node1 in nodes:
             for node2 in nodes:
                 activation_rate = self.parse_model_file(node1 + "_activates_" + node2 +":")
@@ -84,7 +69,6 @@ class Chromosome(object):
                 nx.draw_networkx_edges(g,pos,edgelist = [(node1,node2)],
                                        width=repression_rate * 1,
                                        edge_color='red')
-        #nx.draw_networkx_edges(g,pos,edgelist = g.edges())
         nx.draw_networkx_labels(g,pos,{label:label
                                        for (label,data) in g.nodes(data=True)})
 
