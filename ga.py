@@ -50,4 +50,14 @@ class GA(object):
         self.history.append([self.best_fitness(),
                              self.mean_fitness(),
                              self.variance_fitness()])
+
+    def plot(self):
+        bests,means = transpose(ga.history)
+        plt.plot(bests,label="best")
+        plt.plot(means,label="mean")
+        plt.xlabel("generation")
+        plt.ylabel("fitness (net ATP)")
+        plt.legend(loc=0)
+        
+        
 print "loaded ga"
