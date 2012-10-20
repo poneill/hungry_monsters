@@ -2,13 +2,13 @@
 # transcription rates
 X_activated_transcription:
     X_activated_promoter + {alpha} ATP > X_activated_promoter + X_mrna
-    %s * X_activated_promoter
+    activated_transcription_rate * X_activated_promoter
 X_basal_transcription:
     X_basal_promoter + {alpha} ATP > X_basal_promoter + X_mrna
-    %s * X_basal_promoter
+    basal_transcription_rate * X_basal_promoter
 X_repressed_transcription:
     X_repressed_promoter + {alpha} ATP > X_repressed_promoter + X_mrna
-    %s * X_repressed_promoter
+    repressed_transcription_rate * X_repressed_promoter
 # translation rates
 X_translation:
     X_mrna + {beta} ATP > X_mrna + X_protein
@@ -89,13 +89,13 @@ X_unrepresses_Z:
 # transcription rates
 Y_activated_transcription:
     Y_activated_promoter + {alpha} ATP > Y_activated_promoter + Y_mrna
-    %s * Y_activated_promoter
+    activated_transcription_rate * Y_activated_promoter
 Y_basal_transcription:
     Y_basal_promoter + {alpha} ATP > Y_basal_promoter + Y_mrna
-    %s * Y_basal_promoter
+    basal_transcription_rate * Y_basal_promoter
 Y_repressed_transcription:
     Y_repressed_promoter + {alpha} ATP > Y_repressed_promoter + Y_mrna
-    %s * Y_repressed_promoter
+    repressed_transcription_rate * Y_repressed_promoter
 # translation rates
 Y_translation:
     Y_mrna + {beta} ATP > Y_mrna + Y_protein
@@ -176,13 +176,13 @@ Y_unrepresses_Z:
 # transcription rates
 U_activated_transcription:
     U_activated_promoter + {alpha} ATP > U_activated_promoter + U_mrna
-    %s * U_activated_promoter
+    activated_transcription_rate * U_activated_promoter
 U_basal_transcription:
     U_basal_promoter + {alpha} ATP > U_activated_promoter + U_mrna
-    %s * U_basal_promoter
+    basal_transcription_rate * U_basal_promoter
 U_repressed_transcription:
     U_repressed_promoter + {alpha} ATP > U_repressed_promoter + U_mrna
-    %s * U_repressed_promoter
+    repressed_transcription_rate * U_repressed_promoter
 #translation rates
 U_translation:
     U_mrna + {beta} ATP > U_mrna + U_protein
@@ -260,13 +260,13 @@ U_unrepresses_Z:
 # transcription rates
 V_activated_transcription:
     V_activated_promoter + {alpha} ATP > V_activated_promoter + V_mrna
-    %s * V_activated_promoter
+    activated_transcription_rate * V_activated_promoter
 V_basal_transcription:
     V_basal_promoter + {alpha} ATP > V_basal_promoter + V_mrna
-    %s * V_basal_promoter
+    basal_transcription_rate * V_basal_promoter
 V_repressed_transcription:
     V_repressed_promoter + {alpha} ATP > V_repressed_promoter + V_mrna
-    %s * V_repressed_promoter
+    repressed_transcription_rate * V_repressed_promoter
 # translation rates
 V_translation:
     V_mrna + {beta} ATP > V_mrna + V_protein
@@ -347,13 +347,13 @@ V_unrepresses_Z:
 # transcription rates
 Z_activated_transcription:
     Z_activated_promoter + {alpha} ATP > Z_activated_promoter + Z_mrna
-    %s * Z_activated_promoter
+    activated_transcription_rate * Z_activated_promoter
 Z_basal_transcription:
     Z_basal_promoter + {alpha} ATP > Z_basal_promoter + Z_mrna
-    %s * Z_basal_promoter
+    basal_transcription_rate * Z_basal_promoter
 Z_repressed_transcription:
     Z_repressed_promoter + {alpha} ATP > Z_repressed_promoter + Z_mrna
-    %s * Z_repressed_promoter
+    repressed_transcription_rate * Z_repressed_promoter
 # translation rates
 Z_translation:
     Z_mrna + {beta} ATP > Z_mrna + Z_protein
@@ -435,13 +435,13 @@ Z_unrepresses_Z:
 # transcription rates
 T_activated_transcription:
     T_activated_promoter + {alpha} ATP > T_activated_promoter + T_mrna
-    %s * T_activated_promoter
+    activated_transcription_rate * T_activated_promoter
 T_basal_transcription:
     T_basal_promoter + {alpha} ATP > T_basal_promoter + T_mrna
-    %s * T_basal_promoter
+    basal_transcription_rate * T_basal_promoter
 T_repressed_transcription:
     T_repressed_promoter + {alpha} ATP > T_repressed_promoter + T_mrna
-    %s * T_repressed_promoter
+    repressed_transcription_rate * T_repressed_promoter
 # translation rates
 T_translation:
     T_mrna + {beta} ATP > T_mrna + T_protein
@@ -531,13 +531,13 @@ T_unrepresses_Z:
 # transcription rates
 P_activated_transcription:
     P_activated_promoter + {alpha} ATP > P_activated_promoter + P_mrna
-    %s * P_activated_promoter
+    activated_transcription_rate * P_activated_promoter
 P_basal_transcription:
     P_basal_promoter + {alpha} ATP > P_basal_promoter + P_mrna
-    %s * P_basal_promoter
+    basal_transcription_rate * P_basal_promoter
 P_repressed_transcription:
     P_repressed_promoter + {alpha} ATP > P_repressed_promoter + P_mrna
-    %s * P_repressed_promoter
+    repressed_transcription_rate * P_repressed_promoter
 # translation rates
 P_translation:
     P_mrna + {beta} ATP > P_mrna + P_protein
@@ -628,6 +628,9 @@ Sugar_leaves_system:
     sugar_leaving_rate * S
 
 # Global parameters
+activated_transcription_rate = 10
+basal_transcription_rate = 1
+repressed_transcription_rate = 0.1
 translation_rate = 1
 protein_degradation_rate = 1
 mRNA_degradation_rate = 1
@@ -635,7 +638,8 @@ sugar_entering_rate = 10
 sugar_leaving_rate = 1
 sugar_eating_rate = 1
 
-# total variable params: 94
+
+# total variable params: 73
 
 # Initial conditions
 
@@ -691,3 +695,4 @@ P_protein = 10
 
 S = 0
 ATP = 100
+
