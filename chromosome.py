@@ -5,7 +5,7 @@ class Chromosome(object):
     mrna_cost = 1
     protein_cost = 2
     sugar_benefit = 10
-    num_params = 73
+    num_params = 98
     
     def __init__(self,genotype=None):
         if genotype is None:
@@ -16,7 +16,7 @@ class Chromosome(object):
         self.serial_no = Chromosome.serial_no
         Chromosome.serial_no += 1
         
-    def fitness(self):
+    def fitness(self,verbose=True):
         timesteps = 10000
         if not self.cached_fitness is None:
             return self.cached_fitness
@@ -33,6 +33,8 @@ class Chromosome(object):
         mod.DoStochSim(end=timesteps,trajectories=1)
         atp_label = mod.data_stochsim.species_labels.index('ATP')
         self.cached_fitness = mod.data_stochsim.species[-1][atp_label]
+        if verbose:
+            print self.cached_fitness
         return self.cached_fitness
         
     def recombine(self,other):
