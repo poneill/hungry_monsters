@@ -816,7 +816,7 @@ T_activation_rate = 100
 T_deactivation_rate = 0.1
 
 
-# total variable params: 100
+# total variable params: 98
 
 # Initial conditions
 
