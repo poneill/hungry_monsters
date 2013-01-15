@@ -28,8 +28,8 @@ class Chromosome(object):
             filename = "model%s.psc" % self.serial_no
             with open(filename,'w') as f:
                 f.write(model)
-        mod = stochpy.SSA(File=filename,dir='.')
-        mod.DoStochSim(end=timesteps,trajectories=1)
+        mod = stochpy.SSA(Method="TauLeaping", File=filename,dir='.')
+        mod.DoStochSim(epsilon=.05,end=timesteps,trajectories=1)
         atp_label = mod.data_stochsim.species_labels.index('ATP')
         self.cached_fitness = mod.data_stochsim.species[-1][atp_label]
         return self.cached_fitness
@@ -45,6 +45,6 @@ class Chromosome(object):
             r = random.random()
             genotype[random.randrange(Chromosome.num_params)] = r
         return Chromosome(genotype)
-        
-    
+
 print "loaded chromosome"
+

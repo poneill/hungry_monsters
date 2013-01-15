@@ -1,4 +1,6 @@
 import random
+import sys
+sys.path.append("/home/calebsimmons/Hungry_Monsters/hungry_monsters")
 from chromosome import Chromosome
 from utils import *
 
