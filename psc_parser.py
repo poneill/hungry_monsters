@@ -85,7 +85,7 @@ class Parser(object):
         # effective rate by the reactant copy numbers, so strip those out.
         rate_components = filter(self.sees_numeric,raw_rate_components)
         rate = reduce(lambda x,y:x*y,rate_components,1)
-        self.reactions.append([reactants,products,rate])
+        self.reactions.append([reactants,products,float(rate)])
 
     def parse_half_equation(self,half_equation):
         """Take a lhs or rhs and return a list of components"""
@@ -138,6 +138,3 @@ class Parser(object):
 
     def sees_symbol(self,text):
         return re.match("^[A-Za-z]+$",text)
-
-
-
