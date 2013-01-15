@@ -3,15 +3,35 @@ import matplotlib.pyplot as plt
 import random, gmpy
 from math import *
 import operator as op
+from sympy import *
+
+
+
+
+def factorial(n):
+    """factorial(n): return the factorial of the integer n.
+    factorial(0) = 1
+    factorial(n) with n<0 is -factorial(abs(n))
+    """
+    result = 1
+    for i in xrange(1, abs(n)+1):
+        result *= i
+    if n >= 0:
+        return result
+    else:
+        return -result
+
 
 #this is a helper function to calclate the combinitorial function "N choose k"
-
 def ncr(n,r):
-    m = gmpy.mpz(n)
-    s = gmpy.mpz(r)
-    n = gmpy.comb(m,s)
-    return int(n) 
-
+    if r == 0:
+        return n
+    elif n == 0:
+        return 0
+    elif r > n:
+        return 0
+    else:
+        return factorial(n)/(factorial(n-r)*factorial(r))
 #placeholder data
 
 def parsed_data():
