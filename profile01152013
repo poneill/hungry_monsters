@@ -1,0 +1,75 @@
+date 01/15/2013
+version commit 3317ed705b56e3291775313de2db5be960837390
+
+47 iterations of fitness evaluations
+
+        796182468 function calls (796147620 primitive calls) in 686.039 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000  686.039  686.039 <string>:1(<module>)
+      100    0.009    0.000    0.015    0.000 chromosome.py:13(__init__)
+       48    0.347    0.007  686.014   14.292 chromosome.py:22(fitness)
+       47    0.076    0.002    0.076    0.002 gill_alg.py:168(getATP)
+       48    0.008    0.000    0.008    0.000 gill_alg.py:26(strings_to_floats)
+       48    0.000    0.000    0.000    0.000 gill_alg.py:32(ReactionList)
+       48    0.000    0.000    0.001    0.000 gill_alg.py:40(PopulationVector)
+       48    0.009    0.000    0.015    0.000 gill_alg.py:51(Cmu)
+       48    0.000    0.000    0.000    0.000 gill_alg.py:58(calcM)
+       48    0.013    0.000    0.063    0.001 gill_alg.py:64(calcN)
+   475904   13.137    0.000   13.137    0.000 gill_alg.py:74(calcMu)
+   475905  305.608    0.001  634.539    0.001 gill_alg.py:85(calc_h)
+162759177  141.114    0.000  211.533    0.000 gill_alg.py:9(ncr)
+       48   24.851    0.518  678.176   14.129 gill_alg.py:95(stochsimm)
+    39264    0.075    0.000    0.135    0.000 psc_parser.py:120(sees_blank_line)
+    76608    0.034    0.000    0.034    0.000 psc_parser.py:121(<genexpr>)
+    42000    0.033    0.000    0.053    0.000 psc_parser.py:123(sees_comment)
+    34992    0.028    0.000    0.045    0.000 psc_parser.py:126(sees_reaction_name)
+    23328    0.010    0.000    0.010    0.000 psc_parser.py:129(sees_reaction_equation)
+    11664    0.005    0.000    0.005    0.000 psc_parser.py:132(sees_reaction_rate)
+    28080    0.036    0.000    0.196    0.000 psc_parser.py:136(sees_numeric)
+       48    0.019    0.000    0.038    0.001 psc_parser.py:29(__init__)
+       48    0.121    0.003    0.381    0.008 psc_parser.py:36(parse_lines_into_sentences)
+       48    0.015    0.000    7.343    0.153 psc_parser.py:59(parse)
+    14016    0.038    0.000    6.947    0.000 psc_parser.py:65(parse_sentence)
+     2352    0.008    0.000    0.012    0.000 psc_parser.py:73(parse_init_val)
+    11664    6.306    0.001    6.888    0.001 psc_parser.py:78(parse_reaction)
+     9407    0.007    0.000    0.007    0.000 psc_parser.py:87(<lambda>)
+    23328    0.088    0.000    0.244    0.000 psc_parser.py:90(parse_half_equation)
+58176/23328    0.108    0.000    0.119    0.000 psc_parser.py:98(rectify_coefficients)
+        1    0.009    0.009  686.023  686.023 py12768YKG:50(fitnesses)
+        1    0.000    0.000  686.023  686.023 py12768YKG:62(record_history)
+        1    0.000    0.000  686.039  686.039 py12768YKG:9(__init__)
+   951808    0.911    0.000    1.172    0.000 random.py:355(uniform)
+    28080    0.052    0.000    0.160    0.000 re.py:134(match)
+     1392    0.003    0.000    0.010    0.000 re.py:139(search)
+    29472    0.053    0.000    0.072    0.000 re.py:226(_compile)
+    39264    0.026    0.000    0.047    0.000 {all}
+    11664    0.035    0.000    0.232    0.000 {filter}
+    25776    0.009    0.000    0.009    0.000 {len}
+    11664    0.038    0.000    0.282    0.000 {map}
+233240412   70.419    0.000   70.419    0.000 {math.factorial}
+   475904    0.288    0.000    0.288    0.000 {math.log}
+116657208   27.320    0.000   27.320    0.000 {method 'append' of 'list' objects}
+162759178   39.496    0.000   39.496    0.000 {method 'count' of 'list' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+    34992    0.017    0.000    0.017    0.000 {method 'endswith' of 'str' objects}
+    29472    0.019    0.000    0.019    0.000 {method 'get' of 'dict' objects}
+     1392    0.001    0.000    0.001    0.000 {method 'groups' of '_sre.SRE_Match' objects}
+       48    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+       48    0.002    0.000    0.002    0.000 {method 'join' of 'str' objects}
+    28080    0.040    0.000    0.040    0.000 {method 'match' of '_sre.SRE_Pattern' objects}
+   961608    0.266    0.000    0.266    0.000 {method 'random' of '_random.Random' objects}
+       96    0.015    0.000    0.015    0.000 {method 'readlines' of 'file' objects}
+      144    0.012    0.000    0.012    0.000 {method 'replace' of 'str' objects}
+     1392    0.003    0.000    0.003    0.000 {method 'search' of '_sre.SRE_Pattern' objects}
+    49008    0.049    0.000    0.049    0.000 {method 'split' of 'str' objects}
+    42000    0.019    0.000    0.019    0.000 {method 'startswith' of 'str' objects}
+   107280    0.045    0.000    0.045    0.000 {method 'strip' of 'str' objects}
+       48    0.001    0.000    0.001    0.000 {method 'update' of 'dict' objects}
+       48    0.007    0.000    0.007    0.000 {method 'write' of 'file' objects}
+      144    0.004    0.000    0.004    0.000 {open}
+   476005    1.278    0.000    1.278    0.000 {range}
+115656344   50.849    0.000   50.856    0.000 {reduce}
+   475952    2.646    0.000    2.646    0.000 {sum}
